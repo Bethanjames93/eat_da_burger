@@ -1,4 +1,4 @@
-const orm = require("../config/orm");
+const orm = require("../config/orm.js");
 
 const eat = {
     all: function(cb) {
@@ -7,20 +7,18 @@ const eat = {
         });
     },
 
-    create: function(cols, vals, cb) {
-        orm.create("burgers", cols, vals, function(res) {
-            cb(res);
-        });
+    create: function(name, cb) {
+        orm.create("burgers", ["burger_type", "devoured"], [name, false],
+        cb);
     },
 
-    update: function(objColVals, condition, cb) {
-        orm.update("burgers", objColVals, condition, function(res) {
-            cb(res);
-        });
+    update: function(id, cb) {
+        orm.update("burgers", { devoured: true },
+        condition,cb);
     },
 
-    delete: function(table, condition, cb) {
-        orm.delete("burgers", table, condition, function(res) {
+    delete: function(id, cb) {
+        orm.delete("burgers", id, function(res) {
             cb(res);
         });
     }

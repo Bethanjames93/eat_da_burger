@@ -2,37 +2,25 @@ const express = require("express");
 const router = express.Router(); 
 const eat = require("../models/eat");
 
-router.get("/", function(req, res) {
-    eat.all(function(data) {
-        const hbsObject = {
-            eat: data
-        };
-        console.log(hbsObject);
-        res.render("index", hbsObject);
+router.get("/burger", function(req, res) {
+    eat.all(function(burgerData) {
+        res.render("index", { burger_data: burgerData });
     });
 });
 
-router.post("/api/eat", function(req, res) {
-    eat.create([
-        "name"
-    ], [req.body.name, req.body.devoured], function(result) {
-        res.json({ id: result.insertId });
+router.post("/burger/create", function(req, res) {
+    eat.create(req.body.name, function(result) {
+        console.log(result);
+        res.redirect("/");
     });
 });
 
-router.put("/api/eat/:id", function(req, res) {
-    const condition = "id = " + req.params.id;
+router.put("/burgers/:id", function(req, res) {
 
-    console.log("condition", condition);
+    eat.update(req.params.id, function(result) {
+        console.log(result);
 
-    eat.update({
-        devoured: req.body.devoured
-    }, conditon, function(result) {
-        if (result.changedRows == 0) {
-            return res.status(404).end();
-        } else {
-            res.status(200).end();
-        }
+        res.status(200).end();
     });
 });
 

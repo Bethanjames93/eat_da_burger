@@ -41,9 +41,9 @@ const orm = {
     create: function(table, cols, vals, cb) {
         const queryString = "INSERT INTO " + table;
 
-        queryString += "(";
+        queryString += " (";
         queryString += cols.toString();
-        queryString += ")";
+        queryString += ") ";
         queryString += "VALUES (";
         queryString += printQuestionMarks(vals.length);
         queryString += ") ";
@@ -66,7 +66,9 @@ const orm = {
         queryString += " WHERE ";
         queryString += condition;
 
-        console.log(queryString, function(err, result) {
+        console.log(queryString);
+        
+        connection.query(queryString, function(err, result) {
             if (err) {
                 throw err;
             }
