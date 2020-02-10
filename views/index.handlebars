@@ -1,16 +1,33 @@
 <h1>Eat Da Burger!</h1>
 
-<ul>
-    {{burger}}
-</ul>
+
+    <ul>
+        {{#each burgers}}
+            {{#unless devour}}
+                {{> eats/eat-block devour=true}}
+            {{/unless}}
+        {{/each}}
+    </ul>
+
+
+    <ul>
+        {{#each burgers}}
+            {{#if devour}}
+                {{> eats/eat-block devour=false}}
+            {{/if}}
+        {{/each}}
+    </ul>
+
 
 <h2>Order a burger</h2>
-
-<form class="create-form">
-    <div class="form-group">
-        <input type="text" name="name">
+    <div>
+        <form>
+            <input type="text" name="name" value="">
+            <button type="submit">Add Order</button>
+        </form>
+        <p>Enter you favourite burger and add it to the order.</p>
     </div>
 
-    <button type="submit">Add Order</button>
-</form>
+
+    
 

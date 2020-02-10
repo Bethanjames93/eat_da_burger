@@ -2,25 +2,31 @@ const express = require("express");
 const router = express.Router(); 
 const eat = require("../models/eat");
 
-router.get("/burger", function(req, res) {
-    eat.all(function(burgerData) {
-        res.render("index", { burger_data: burgerData });
+router.get("/", function(req, res) {
+    eat.all(function(burgerType) {
+        res.render("index", { burger_type: burgerType });
     });
 });
 
-router.post("/burger/create", function(req, res) {
+router.post("/api/burgers", function(req, res) {
     eat.create(req.body.name, function(result) {
         console.log(result);
-        res.redirect("/");
+        res.json({ id: result.insertId });
     });
 });
 
-router.put("/burgers/:id", function(req, res) {
+router.put("/api/burgers/:id", function(req, res) {
+    const condition = "id = " + req.params.id;
+    console.log("condition", condition);
 
-    eat.update(req.params.id, function(result) {
-        console.log(result);
-
-        res.status(200).end();
+    eat.update({
+        devour: req.body.devour
+    }, condtion, function(result) {
+        if (result.changedRows == 0){
+            return res.status(404).end();
+        } else {
+            res.status(200).end();
+        }
     });
 });
 
